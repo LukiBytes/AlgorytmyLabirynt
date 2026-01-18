@@ -23,11 +23,36 @@ def generate_board(rows, cols):
     
     return matrix_board
 
+def add_base_border(matrix):
+
+    for i in range(rows):
+        for j in range(cols):
+            if (i == 1 or i == rows-2 or j == 1 or j == cols-2):
+                matrix[i][j] = 3
+
+    #Naprawa wiersza [0]
+    matrix[0][1] = 1
+    matrix[0][8] = 1
+
+    #Naprawa wiersza [1]
+    matrix[1][0] = 1
+    matrix[1][9] = 1
+
+    #Naprawa wiersza[8]
+    matrix[8][0] = 1
+    matrix[8][9] = 1
+
+    #Naprawa wiersza[8]
+    matrix[9][1] = 1
+    matrix[9][8] = 1
+
+    return matrix
+    
 #Generuje element labityntu w macierzy w tym przypadku krzyż
 def generate_cross_in_matrix(matrix):
     for i in range(rows):
         wiersz = []
-        for j in range(cols):  
+        for j in range(cols):
             wiersz.append(0)
         matrix.append(wiersz)
     matrix[3][3] = 1
@@ -59,7 +84,7 @@ def print_board(matrix):
 def bin_to_char(matrix):
     for i in range(rows):
         for j in range(cols):
-            if matrix[i][j] == 0:
+            if matrix[i][j] == 0 or matrix[i][j] == 3:
                 matrix[i][j] = '.'
             else:
                 matrix[i][j] = '#'
@@ -68,25 +93,15 @@ def bin_to_char(matrix):
 
 #void main(){
 board = generate_board(rows, cols)
-board_withelement = generate_cross_in_matrix(matrix_elements)
-
-
-print("Board with boarders")
-print("                   ")
+board = add_base_border(board)
+print_board(board)
+board_with_cross = generate_cross_in_matrix(matrix_elements)
+board = join_matrix(board, board_with_cross)
+board = join_matrix(board, board_with_cross)
+board = bin_to_char(board)
 print_board(board)
 
-print("                     ")
-print("Boards with cross")
-print("                     ")
-print_board(board_withelement)
 
-print("                     ")
-print("joined boards")
-print("                     ")
-
-bin_board = join_matrix(board, board_withelement)
-char_board = bin_to_char(bin_board)
-print_board(char_board)
 
 
 
