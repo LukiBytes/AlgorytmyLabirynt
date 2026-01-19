@@ -1,11 +1,19 @@
 
+#TODO
+# DODAWANIE PUNKTOW STYKOWYCH DO ELEMENTÓW (niezależnie od wielkości linii)
+# SPRAWDZENIE CZY ELEMENTY NIE BĘDĄ NA SIEBIE NACHODZIĆ
+# CZY MOŻNA WSTAWIĆ ELEMENT
+# PRZESUWANIE ELEMENTÓW PO PLANSZY OBLICZANIE NAJLEPSZEJ POZYCJI NA PODSTAWIE PUNKTÓW STYKOWYCH
+
+
 #Wielkość planszy
 rows = 10
 cols = 10
 
 #Deklaracja tablic
 matrix_board = []
-matrix_elements = []
+matrix_with_cross = []
+matrix_with_line = []
 
 #Generue planszę z obramowaniem
 def generate_board(rows, cols):
@@ -23,6 +31,7 @@ def generate_board(rows, cols):
     
     return matrix_board
 
+#Dodaje obramowanie planszy
 def add_base_border(matrix):
 
     for i in range(rows):
@@ -47,7 +56,7 @@ def add_base_border(matrix):
     matrix[9][8] = 1
 
     return matrix
-    
+
 #Generuje element labityntu w macierzy w tym przypadku krzyż
 def generate_cross_in_matrix(matrix):
     for i in range(rows):
@@ -62,10 +71,20 @@ def generate_cross_in_matrix(matrix):
     matrix[3][2] = 1
     return matrix
 
-#Logiczna operacja OR na macierzach aby je połączyć
-#TODO SPRAWDZENIE CZY ELEMENTY NIE BĘDĄ NA SIEBIE NACHODZIĆ
-#TODO CZY MOŻNA WSTAWIĆ ELEMENT
+def generate_line_in_matrix(matrix,len):
+    for i in range(rows):
+        wiersz = []
+        for j in range(cols):
+            wiersz.append(0)
+        matrix.append(wiersz)
 
+    for i in range(len):
+        matrix[1][i+2] = 1
+        len = len - 1
+    return matrix
+    
+
+#Logiczna operacja OR na macierzach aby je połączyć
 def join_matrix(board_matrix, join_matrix):
     result = [[0] * cols for _ in range(rows)]
     for i in range(rows):
@@ -91,11 +110,19 @@ def bin_to_char(matrix):
     return matrix
 
 
-#void main(){
+
+
+#void main()
 board = generate_board(rows, cols)
 board = add_base_border(board)
 print_board(board)
-board_with_cross = generate_cross_in_matrix(matrix_elements)
+
+board_with_cross = generate_cross_in_matrix(matrix_with_cross)
+board_with_line = generate_line_in_matrix(matrix_with_line, 3)
+board_with_line = bin_to_char(board_with_line)
+print_board(board_with_line)
+
+
 board = join_matrix(board, board_with_cross)
 board = join_matrix(board, board_with_cross)
 board = bin_to_char(board)
